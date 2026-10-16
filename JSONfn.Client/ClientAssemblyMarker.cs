@@ -1,4 +1,4 @@
-namespace JsonUI_blazor.Client;
+namespace JSONfn.Client;
 
 public static class ClientAssemblyMarker
 {

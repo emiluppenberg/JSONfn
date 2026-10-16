@@ -1,5 +1,5 @@
-using JsonUI_blazor;
-using JsonUI_blazor.Client;
+using JSONfn;
+using JSONfn.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
