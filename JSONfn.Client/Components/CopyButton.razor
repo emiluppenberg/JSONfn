@@ -1,6 +1,6 @@
 @inject IJSRuntime JS
 
-<button class="sticky min-w-6 top-0 right-0 ml-auto button-base bg-blue-800/30 flex items-center" title="Copy" aria-label="Copy"
+<button class="copy-button" title="Copy" aria-label="Copy"
         @onclick="async () => await HandleCopyAsync()">
   @if (!ShowNotification)
   {

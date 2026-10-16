@@ -2,13 +2,13 @@
 
 <PageTitle>JSONfn - Easy code from JSON</PageTitle>
 
-<div class="page">
+<div class="page home-page">
 
-  <div class="w-full flex flex-col flex-1 items-center overflow-y-auto space-y-10 scroll-smooth">
+  <div class="home-content">
 
-    <Cookie Page="home" />
+    @* <Cookie Page="home" /> *@
 
-    <header>
+    <header class="home-hero">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 150" role="img" aria-labelledby="title desc">
         <title id="title">JSONfn() logo</title>
         <desc id="desc">Tight stylized JSONfn function-call text logo using blue and cyan colors inspired by the
@@ -35,48 +35,48 @@
         </text>
       </svg>
 
-      <h1 class="text-center text-xl font-medium my-2 text-cyan-400 select-none">Easy code from JSON</h1>
+      <h1 class="home-title">Easy code from JSON</h1>
 
       <div
-        class="flex flex-col min-w-50 md:min-w-200 space-y-2 md:space-y-5 leading-relaxed text-cyan-400 text-sm md:text-base">
-        <div class="flex px-5 justify-evenly md:h-5 select-none">
-          <p class="text-center md:text-start italic">
+        class="home-details">
+        <div class="home-steps">
+          <p>
             Visualize JSON
           </p>
 
-          <p class="text-center md:text-start italic">
+          <p>
             Pick properties
           </p>
 
-          <p class="text-center md:text-start italic">
+          <p>
             Generate clean, configurable code
           </p>
         </div>
-        <div class="flex flex-col md:flex-row md:justify-around min-w-full md:h-15">
-          <p class="font-light text-white text-xs self-center">
+        <div class="home-summary">
+          <p class="home-description">
             Fast and clutter-free classes/interfaces/types/zodschemas.<br />
             Supported languages: <strong>C#</strong>, <strong>TypeScript</strong><br />
           </p>
           <article
-            class="mt-5 md:mt-0 flex flex-col self-center md:self-auto p-2 h-15 w-50 md:w-100 bg-(--bg-primary) text-white text-[0.5rem] overflow-y-auto">
-            <div class="flex flex-col h-auto space-y-2">
-              <div class="flex space-x-2">
+            class="home-changelog">
+            <div class="home-changelog-list">
+              <div class="home-changelog-entry">
                 <p>31/01</p>
-                <p class="text-wrap wrap-anywhere">Fixed bug which prevented JSON with kebab-case keys from parsing</p>
+                <p>Fixed bug which prevented JSON with kebab-case keys from parsing</p>
               </div>
-              <div class="flex space-x-2">
+              <div class="home-changelog-entry">
                 <p>15/02</p>
-                <p class="text-wrap wrap-anywhere">C# support for backing fields, customizing get/set, customizing
+                <p>C# support for backing fields, customizing get/set, customizing
                   public/private
                 </p>
               </div>
-              <div class="flex space-x-2">
+              <div class="home-changelog-entry">
                 <p>15/02</p>
-                <p class="text-wrap wrap-anywhere">C# handles plural naming for collections grammatically</p>
+                <p>C# handles plural naming for collections grammatically</p>
               </div>
-              <div class="flex space-x-2">
+              <div class="home-changelog-entry">
                 <p>15/02</p>
-                <p class="text-wrap wrap-anywhere">Added copy-to-clipboard button</p>
+                <p>Added copy-to-clipboard button</p>
               </div>
             </div>
           </article>
@@ -84,16 +84,16 @@
       </div>
     </header>
 
-    <div class="flex justify-center w-full h-auto">
+    @* <div class="home-ads">
       <div id="home-ad-desktop-1"></div>
       <div id="home-ad-desktop-2"></div>
       <div id="home-ad-mobile-1"></div>
-    </div>
+    </div> *@
 
   </div>
 
   <NavLink
-    class="w-full h-12 font-medium text-3xl italic text-center text-white p-1 bg-(--bluebutton) hover:bg-(--bluebutton-h) active:scale-95"
+    class="home-go"
     href="tool">Go
   </NavLink>
 
