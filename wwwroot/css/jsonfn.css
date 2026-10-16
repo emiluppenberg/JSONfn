@@ -15,6 +15,8 @@
   --accent: #56d8cb;
   --accent-soft: rgba(86, 216, 203, .14);
   --accent-deep: #123c42;
+  --option-selected-bg: #236b72;
+  --option-selected-text: #f3fffe;
   --blue: #598fec;
   --blue-hover: #75a4f5;
   --node: #193f47;
@@ -46,6 +48,8 @@ html[data-theme="light"] {
   --accent: #087e78;
   --accent-soft: rgba(8, 126, 120, .12);
   --accent-deep: #d9f0eb;
+  --option-selected-bg: #a3ded8;
+  --option-selected-text: #07484b;
   --blue: #245fbe;
   --blue-hover: #174d9f;
   --node: #d9eeec;
@@ -321,6 +325,7 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
   width: calc(var(--option-flyout-width) + 8px); height: calc(100% + 8px);
   border: 1px solid var(--border-strong); border-radius: 7px; background: var(--surface-raised);
   box-shadow: 0 12px 30px rgba(0,0,0,.38); pointer-events: none; }
+.node-col .option-submenu.is-open:hover::before { border-color: var(--accent); }
 .node-col .option-submenu.is-open > .option-submenu-trigger { grid-column: 1; grid-row: 1; pointer-events: auto; }
 .node-col .option-submenu.is-open > .option-submenu-choice { position: relative; z-index: 1; grid-column: 2; pointer-events: auto; }
 .node-col :is(.annotation-key-panel, .annotation-value-panel) { left: calc(100% + var(--option-gap)); width: var(--option-flyout-width); }
@@ -337,7 +342,7 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
   color: var(--text); font-size: 11px; font-weight: 550; text-align: center; overflow: hidden;
   text-overflow: ellipsis; white-space: nowrap; }
 .node-col :is(.option-setting, .option-submenu-trigger, .option-submenu-choice):hover {
-  border-color: #5ca9af; background: rgba(86,216,203,.15); }
+  border-color: var(--accent); background: var(--surface-hover); }
 .node-col .option-submenu-trigger-compact { font-size: 10px; }
 .node-col .option-submenu-check { justify-content: space-between; }
 .node-col .option-setting-label { flex: 1; min-width: 0; font-size: 10px; line-height: 1.1; text-align: center; white-space: normal; }
@@ -347,17 +352,35 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
 .node-col .annotation-value-panel .option-submenu-choice { height: auto; min-height: var(--inp-h);
   justify-content: flex-start; padding: 4px 6px; font-size: 10px; line-height: 1.2;
   overflow-wrap: anywhere; text-align: left; white-space: normal; }
-.node-col :is(.option-tone-kvp, .option-tone-kvp-selected) { background: #265362; }
-.node-col .option-tone-kvp-active { background: #377487; }
-.node-col :is(.option-tone-node, .option-tone-node-selected) { background: #20535b; }
-.node-col .option-tone-node-active { background: #31727b; }
-.node-col :is(.option-tone-sticky, .option-tone-sticky-selected) { background: #28626c; }
-.node-col .option-tone-sticky-active { background: #397d83; }
-.node-col .option-tone-choice-active { background: #5b9d9d; color: #fff; }
-.node-col :is(.option-submenu-choice, .option-submenu-trigger).option-choice-selected-text { color: #fff; }
+.node-col :is(.option-tone-kvp, .option-tone-kvp-selected, .option-tone-node, .option-tone-node-selected,
+  .option-tone-sticky, .option-tone-sticky-selected) { background: var(--surface-raised); }
+.node-col :is(.option-tone-kvp-active, .option-tone-node-active, .option-tone-sticky-active,
+  .option-tone-choice-active) {
+  border-color: var(--accent); background: var(--option-selected-bg);
+  color: var(--option-selected-text); font-weight: 700;
+}
+.node-col .option-panel .option-submenu-choice:is(.option-tone-kvp-active, .option-tone-node-active,
+  .option-tone-sticky-active, .option-tone-choice-active):is(:hover, :focus-visible) {
+  border-color: var(--accent); background: var(--option-selected-bg);
+  color: var(--option-selected-text);
+}
+.node-col :is(.option-submenu-choice, .option-submenu-trigger).option-choice-selected-text {
+  color: var(--option-selected-text);
+}
 .node-col .option-outline-hover:hover, .node-col .option-parent-hover:hover { border-color: var(--accent); }
 .node-col :is(.option-outline-kvp, .option-outline-node, .option-outline-sticky):hover { border-color: var(--accent); }
-.node-col :is(.option-hover-kvp, .option-hover-node, .option-hover-sticky):hover { background: var(--surface-hover); }
+.node-col .option-panel :is(.option-submenu-trigger, .option-submenu-choice).annotation-selection-active {
+  position: relative; padding-right: 24px; border-color: var(--accent);
+  background: var(--option-selected-bg); color: var(--option-selected-text);
+  box-shadow: inset 3px 0 var(--accent); font-weight: 700;
+}
+.node-col .option-panel :is(.option-submenu-trigger, .option-submenu-choice).annotation-selection-active:is(:hover, :focus-visible) {
+  background: var(--option-selected-bg); color: var(--option-selected-text);
+}
+.node-col .option-panel :is(.option-submenu-trigger, .option-submenu-choice).annotation-selection-active::after {
+  content: "✓"; position: absolute; top: 50%; right: 7px; transform: translateY(-50%);
+  color: var(--option-selected-text); font-size: 12px; line-height: 1;
+}
 
 /* Consent modal */
 .cookie-container { position: absolute; top: 50%; left: 50%; z-index: 60; display: flex; align-items: center;
@@ -462,19 +485,6 @@ html[data-theme="light"] .node-col :is(.option-panel, .option-submenu, .annotati
 }
 html[data-theme="light"] .node-col .option-submenu.is-open::before {
   box-shadow: 0 12px 30px rgba(35,73,97,.16);
-}
-html[data-theme="light"] .node-col :is(.option-setting, .option-submenu-trigger, .option-submenu-choice):hover {
-  border-color: #67aaa6; background: var(--accent-soft);
-}
-html[data-theme="light"] .node-col :is(.option-tone-kvp, .option-tone-kvp-selected) { background: #c5e7e8; }
-html[data-theme="light"] .node-col .option-tone-kvp-active { background: #a7d9db; }
-html[data-theme="light"] .node-col :is(.option-tone-node, .option-tone-node-selected) { background: #c8e5e2; }
-html[data-theme="light"] .node-col .option-tone-node-active { background: #a8d5d0; }
-html[data-theme="light"] .node-col :is(.option-tone-sticky, .option-tone-sticky-selected) { background: #b9dddd; }
-html[data-theme="light"] .node-col .option-tone-sticky-active { background: #9dcecd; }
-html[data-theme="light"] .node-col .option-tone-choice-active { background: #72b6b4; color: #092f37; }
-html[data-theme="light"] .node-col :is(.option-submenu-choice, .option-submenu-trigger).option-choice-selected-text {
-  color: #092f37;
 }
 html[data-theme="light"] .cookie-container {
   border-color: #8fc4c2; background: #e6f5f3; box-shadow: 0 24px 70px rgba(35,73,97,.22);

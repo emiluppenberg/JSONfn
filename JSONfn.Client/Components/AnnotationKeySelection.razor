@@ -1,6 +1,6 @@
 @using System.Reflection.Metadata.Ecma335
 <div class="transition-opt option-submenu-anchor @Transition @(IsToggled ? "annotation-anchor-open" : "")">
-  <button class="option-submenu-trigger option-submenu-trigger-compact" id="annotation"
+  <button class="option-submenu-trigger option-submenu-trigger-compact @(Kvp?.JsonLibraryAnnotations?.Count > 0 || Node?.JsonLibraryAnnotations?.Count > 0 ? "annotation-selection-active" : "")" id="annotation"
     @onclick="async () => { IsToggled = !IsToggled; }">Json annotations</button>
   <div
     class="transition-opt annotation-key-panel @Transition @(IsToggled ? $"is-open option-outline-hover {OutlineColor}" : "") @StickyClass">
