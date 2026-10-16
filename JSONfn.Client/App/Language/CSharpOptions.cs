@@ -166,9 +166,9 @@ public class CSharpOptions : ILanguageOptions
       datatype = kvp.Nullable ? $"{datatype}?" : datatype;
 
       var propName = this.NamingConvention.Parse(kvp.Kvp.Key);
-      var propNamePlural = kvp.CollectionAs is not null && propName.EndsWith("s") ? "es" : "s";
-      propNamePlural = kvp.CollectionAs is not null && propName.EndsWith("es") ? "" : propNamePlural;
-      propName = kvp.CollectionAs is not null ? $"{propName}{propNamePlural}" : propName;
+      // var propNamePlural = kvp.CollectionAs is not null && propName.EndsWith("s") ? "es" : "s";
+      // propNamePlural = kvp.CollectionAs is not null && propName.EndsWith("es") ? "" : propNamePlural;
+      // propName = kvp.CollectionAs is not null ? $"{propName}{propNamePlural}" : propName;
 
       var fieldName = this.NamingConvention.ParseField(propName);
       var field = kvp.HasField ? $"  private {datatype} {fieldName};{Environment.NewLine}" : null;
