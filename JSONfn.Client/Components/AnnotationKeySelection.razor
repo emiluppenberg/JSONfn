@@ -1,10 +1,9 @@
 @using System.Reflection.Metadata.Ecma335
-<div class="transition-opt @Transition relative w-20 h-(--inp-h)">
-  <button class="w-full h-(--inp-h) hover:border truncate text-[0.5rem]" id="annotation"
+<div class="transition-opt option-submenu-anchor @Transition @(IsToggled ? "annotation-anchor-open" : "")">
+  <button class="option-submenu-trigger option-submenu-trigger-compact" id="annotation"
     @onclick="async () => { IsToggled = !IsToggled; }">Json annotations</button>
   <div
-    class="transition-opt @Transition flex flex-col absolute top-0 w-20 h-fit text-xs font-medium @(IsToggled ? $"hover:outline-3 {OutlineColor}" : "") @StickyClass"
-    style="left:5rem;">
+    class="transition-opt annotation-key-panel @Transition @(IsToggled ? $"is-open option-outline-hover {OutlineColor}" : "") @StickyClass">
     @if (IsToggled)
     {
       @foreach (var kvp in LangOptions.JsonLibrary!.Annotations)
@@ -40,14 +39,14 @@
   private string OutlineColor = null!;
   private string SelectedColor = null!;
 
-  private string Transition = "scale-x-0";
+  private string Transition = "is-collapsed-x";
 
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
     if (firstRender)
     {
       await Task.Delay(50);
-      Transition = "scale-x-100";
+      Transition = "is-expanded-x";
       StateHasChanged();
     }
   }
@@ -57,42 +56,42 @@
     foreach (var key in LangOptions.JsonLibrary!.Annotations.Keys)
     {
       ValueToggles.Add(key, false);
-      ValueTransitions.Add(key, "scale-x-0");
+      ValueTransitions.Add(key, "is-collapsed-x");
     }
 
     if (Target == "kvp")
     {
-      BackgroundColor = "bg-(--kvp-sel)";
-      OutlineColor = "outline-(--kvp-sel-hov-ol)";
-      SelectedColor = "bg-(--kvp-selection)";
+      BackgroundColor = "option-tone-kvp";
+      OutlineColor = "option-outline-kvp";
+      SelectedColor = "option-tone-kvp-selected";
     }
     if (Target == "node")
     {
-      BackgroundColor = "bg-(--node)";
-      OutlineColor = "outline-(--node-hov-ol)";
-      SelectedColor = "bg-(--node-selection)";
+      BackgroundColor = "option-tone-node";
+      OutlineColor = "option-outline-node";
+      SelectedColor = "option-tone-node-selected";
     }
     if (Target == "sticky")
     {
-      BackgroundColor = "bg-(--sticky)";
-      OutlineColor = "outline-(--sticky-hov-ol)";
-      @* StickyClass = "-translate-y-[calc(var(--inp-h)/2)]"; *@
-      SelectedColor = "bg-(--sticky-selection)";
+      BackgroundColor = "option-tone-sticky";
+      OutlineColor = "option-outline-sticky";
+      @* StickyClass = "option-sticky-offset"; *@
+      SelectedColor = "option-tone-sticky-selected";
     }
     @* if (Target == "kvp")
     {
-      BackgroundColor = "bg-(--kvp-selection)";
-      OutlineColor = "outline-(--kvp-sel-hov-ol)";
+      BackgroundColor = "option-tone-kvp-selected";
+      OutlineColor = "option-outline-kvp";
     }
     if (Target == "node")
     {
-      BackgroundColor = "bg-(--node-selection)";
-      OutlineColor = "outline-(--node-hov-ol)";
+      BackgroundColor = "option-tone-node-selected";
+      OutlineColor = "option-outline-node";
     }
     if (Target == "sticky")
     {
-      BackgroundColor = "bg-(--sticky-selection)";
-      OutlineColor = "outline-(--sticky-hov-ol)";
+      BackgroundColor = "option-tone-sticky-selected";
+      OutlineColor = "option-outline-sticky";
     } *@
   }
 
@@ -101,11 +100,11 @@
     foreach (var _key in LangOptions.JsonLibrary!.Annotations.Keys)
     {
       ValueToggles[_key] = false;
-      ValueTransitions[_key] = "scale-x-0";
+      ValueTransitions[_key] = "is-collapsed-x";
     }
 
     await Task.Delay(50);
-    ValueTransitions[key] = "scale-x-100";
+    ValueTransitions[key] = "is-expanded-x";
     ValueToggles[key] = isToggled;
   }
 }

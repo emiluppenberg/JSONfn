@@ -26,11 +26,11 @@
 
 @if (setTypeOption == "class")
 {
-  <button class="transition-gen button-base text-[0.5rem]"
+  <button class="transition-gen button-base compact-button"
     @onclick="async () => await OnSetClassPrimaryConstructor.InvokeAsync()">Primary constructor</button>
-  <button class="transition-gen button-base text-[0.5rem]"
+  <button class="transition-gen button-base compact-button"
     @onclick="async () => await OnSetClassRegularConstructor.InvokeAsync()">Regular constructor</button>
-  <button class="transition-gen button-base text-[0.5rem]"
+  <button class="transition-gen button-base compact-button"
     @onclick="async () => await OnSetClassNoConstructor.InvokeAsync()">No constructor</button>
 }
 

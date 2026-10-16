@@ -1,14 +1,14 @@
-<div class="relative w-20 h-(--inp-h)">
+<div class="option-submenu-anchor">
   <div
-    class="flex flex-col absolute top-0 left-0 w-20 h-fit text-xs font-medium @(IsToggled ? $"hover:outline-3 {OutlineColor}" : "")"
+    class="option-submenu @(IsToggled ? $"is-open option-outline-hover {OutlineColor}" : "")"
     @onclick="async () => await OnToggled.InvokeAsync()">
-    <button class="w-full h-(--inp-h) hover:border truncate">@CurrentSelected</button>
+    <button class="option-submenu-trigger">@CurrentSelected</button>
     @if (IsToggled)
     {
       @foreach (var option in Types)
       {
         <button
-          class="z-50 w-full h-(--inp-h) hover:border truncate @BackgroundColor @(option.Name == CurrentSelected ? "bg-white" : "")"
+          class="option-submenu-choice @BackgroundColor @(option.Name == CurrentSelected ? "option-tone-choice-active" : "")"
           @onclick="async () => await OnSelected.InvokeAsync(option)" @onclick:stopPropagation="true">
           @option.Name
         </button>
@@ -41,13 +41,13 @@
   {
     if (Target == "sticky")
     {
-      OutlineColor = "outline-(--sticky-hov-ol)";
-      BackgroundColor = "bg-(--sticky-selection)";
+      OutlineColor = "option-outline-sticky";
+      BackgroundColor = "option-tone-sticky-selected";
     }
     if (Target == "node")
     {
-      OutlineColor = "outline-(--node-hov-ol)";
-      BackgroundColor = "bg-(--node-selection)";
+      OutlineColor = "option-outline-node";
+      BackgroundColor = "option-tone-node-selected";
     }
   }
 }
