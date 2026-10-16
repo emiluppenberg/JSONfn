@@ -28,6 +28,18 @@
 
     <title>JSONfn</title>
     <base href="/" />
+    <script>
+        (() => {
+            let theme;
+            try {
+                theme = localStorage.getItem("jsonfn-theme");
+            } catch { }
+            if (theme !== "light" && theme !== "dark") {
+                theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+            }
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
     <link rel="stylesheet" href="css/jsonfn.css" />
     <link rel="icon" type="image/png" href="jsonfn.png" />
     <link rel="canonical" href="https://www.jsonfn.com" />

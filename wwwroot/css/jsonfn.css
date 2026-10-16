@@ -31,6 +31,33 @@
   --sticky-w: 19.75rem;
 }
 
+html[data-theme="light"] {
+  color-scheme: light;
+  --canvas: #f1f6fa;
+  --canvas-highlight: #fafcff;
+  --surface: #ffffff;
+  --surface-raised: #f3f8fb;
+  --surface-hover: #e6f0f5;
+  --border: #cedce6;
+  --border-strong: #a8bfce;
+  --text: #182d3d;
+  --muted: #475f70;
+  --subtle: #647e91;
+  --accent: #087e78;
+  --accent-soft: rgba(8, 126, 120, .12);
+  --accent-deep: #d9f0eb;
+  --blue: #245fbe;
+  --blue-hover: #174d9f;
+  --node: #d9eeec;
+  --node-hover: #c8e5e2;
+  --node-selected: #b4dfdb;
+  --property: #e6f0f7;
+  --property-hover: #d7e8f2;
+  --property-selected: #c5e7e8;
+  --sticky: #cce8e8;
+  --sticky-hover: #b9dddd;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 html, body { width: 100%; height: 100%; margin: 0; }
 html { overflow: hidden; }
@@ -62,6 +89,15 @@ a:hover { color: #8cece3; }
 .nav-container .link:hover { background: var(--surface-raised); color: var(--text); }
 .nav-container .link.active { background: var(--accent-soft); color: var(--accent); }
 .nav-container:has(.link.active:not(:first-child)) .link:first-child.active { background: transparent; color: var(--muted); }
+.theme-toggle {
+  display: grid; place-items: center; flex: none; width: 34px; height: 34px; margin-left: auto;
+  border: 1px solid var(--border-strong); border-radius: 9px; background: var(--surface-raised);
+  color: var(--text); transition: background .18s, border-color .18s, transform .12s;
+}
+.theme-toggle:hover { background: var(--surface-hover); border-color: var(--accent); }
+.theme-toggle:active { transform: scale(.94); }
+.theme-toggle::before { content: "☀"; font-size: 18px; line-height: 1; }
+html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px; }
 .page {
   position: relative; z-index: 10; display: flex; flex-direction: column; width: 100%; height: 100%;
   padding-top: 54px; background: radial-gradient(circle at 85% -10%, #152c40 0, transparent 42%),
@@ -315,6 +351,95 @@ a:hover { color: #8cece3; }
   .home-go { width: calc(100% - 20px); }
   .home-changelog { height: 126px; }
 }
+
+/* The light palette reuses the same layout and components as the default dark theme. */
+html[data-theme="light"] a:hover { color: #06645f; }
+html[data-theme="light"] ::selection { background: #b4dfdb; color: #182d3d; }
+html[data-theme="light"] ::-webkit-scrollbar-thumb { background: #b5c8d4; }
+html[data-theme="light"] .nav-container {
+  background: rgba(250, 252, 255, .94); box-shadow: 0 8px 24px rgba(35, 73, 97, .08);
+}
+html[data-theme="light"] .page {
+  background: radial-gradient(circle at 85% -10%, #d7ebf0 0, transparent 42%),
+    linear-gradient(160deg, var(--canvas-highlight), var(--canvas) 58%);
+}
+html[data-theme="light"] .button-base:hover,
+html[data-theme="light"] .select-base:hover,
+html[data-theme="light"] .load-button:hover { border-color: #779aab; }
+html[data-theme="light"] .button-base-active { border-color: #65afa9; color: #075e59; }
+html[data-theme="light"] .button-base-active:hover { background: #c6e6df; }
+html[data-theme="light"] .select-base {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23475f70' stroke-width='1.6'/%3E%3C/svg%3E");
+}
+html[data-theme="light"] .load-input,
+html[data-theme="light"] .load-textarea { background: #ffffff; }
+html[data-theme="light"] .home-hero svg { filter: drop-shadow(0 15px 30px rgba(35, 73, 97, .12)); }
+html[data-theme="light"] .home-hero svg rect { fill: #e4f0f4; stroke: #a5c6d2; }
+html[data-theme="light"] .home-steps p { background: #ffffff; color: #315b64; }
+html[data-theme="light"] .home-changelog { box-shadow: 0 14px 34px rgba(35, 73, 97, .10); }
+html[data-theme="light"] .home-go {
+  border-color: #176e82; background: linear-gradient(100deg, #087f78, #21699c);
+  box-shadow: 0 12px 26px rgba(24, 71, 96, .18);
+}
+html[data-theme="light"] .home-go:hover { background: linear-gradient(100deg, #096c68, #185785); color: #ffffff; }
+html[data-theme="light"] .info-content a { text-decoration-color: #85b9b8; }
+html[data-theme="light"] .node-container,
+html[data-theme="light"] .code {
+  background: rgba(255, 255, 255, .96);
+  box-shadow: inset 0 1px rgba(255,255,255,.8), 0 12px 32px rgba(35,73,97,.08);
+}
+html[data-theme="light"] .code { color: #116d68; }
+html[data-theme="light"] .bottom-surface { background: rgba(255, 255, 255, .76); }
+html[data-theme="light"] .div-sticky-inactive,
+html[data-theme="light"] .div-sticky-inactive-selected,
+html[data-theme="light"] .div-sticky-active,
+html[data-theme="light"] .div-sticky-active-selected { border-color: #93c9c8; }
+html[data-theme="light"] .div-sticky-inactive:hover,
+html[data-theme="light"] .div-sticky-inactive-selected:hover,
+html[data-theme="light"] .div-sticky-active:hover,
+html[data-theme="light"] .div-sticky-active-selected:hover { border-color: #3e9997; }
+html[data-theme="light"] .div-node,
+html[data-theme="light"] .div-node-selected { border-color: #9dcfca; }
+html[data-theme="light"] .div-node:hover,
+html[data-theme="light"] .div-node-selected:hover { border-color: #55a7a2; }
+html[data-theme="light"] .div-kvp { border-color: #bfd2df; }
+html[data-theme="light"] .div-kvp:hover { border-color: #82a8be; }
+html[data-theme="light"] .div-kvp-selected { border-color: #80bfbd; }
+html[data-theme="light"] .div-kvp-selected:hover { background: #b2dcdd; border-color: #45a3a2; }
+html[data-theme="light"] .key { color: var(--text); }
+html[data-theme="light"] .div-kvp .key { color: #355367; }
+html[data-theme="light"] .value { color: #076c67; }
+html[data-theme="light"] .div-value { border-left-color: rgba(25, 78, 94, .22); }
+html[data-theme="light"] .div-count { background: rgba(25,78,94,.10); border-left-color: rgba(25,78,94,.12); }
+html[data-theme="light"] .count { color: #25485b; }
+html[data-theme="light"] .node-col .transition-opt.absolute,
+html[data-theme="light"] .node-col .flex.flex-col.absolute { box-shadow: 0 12px 30px rgba(35,73,97,.16); }
+html[data-theme="light"] .node-col .transition-opt button:hover,
+html[data-theme="light"] .node-col .flex.flex-col.absolute button:hover { border-color: #67aaa6; background: var(--accent-soft); }
+html[data-theme="light"] .node-col [class~="bg-(--kvp-sel)"],
+html[data-theme="light"] .node-col [class~="bg-(--kvp-selection)"] { background: #c5e7e8; }
+html[data-theme="light"] .node-col [class~="bg-(--kvp-selection-active)"] { background: #a7d9db; }
+html[data-theme="light"] .node-col [class~="bg-(--node)"],
+html[data-theme="light"] .node-col [class~="bg-(--node-selection)"] { background: #c8e5e2; }
+html[data-theme="light"] .node-col [class~="bg-(--node-selection-active)"] { background: #a8d5d0; }
+html[data-theme="light"] .node-col [class~="bg-(--sticky)"],
+html[data-theme="light"] .node-col [class~="bg-(--sticky-selection)"] { background: #b9dddd; }
+html[data-theme="light"] .node-col [class~="bg-(--sticky-selection-active)"] { background: #9dcecd; }
+html[data-theme="light"] .node-col [class~="bg-white"] { background: #72b6b4; color: #092f37; }
+html[data-theme="light"] .node-col button[class~="bg-(--kvp-selection)"],
+html[data-theme="light"] .node-col button[class~="bg-(--node-selection)"],
+html[data-theme="light"] .node-col button[class~="bg-(--sticky-selection)"] { background: rgba(8,126,120,.16); }
+html[data-theme="light"] .node-col button[class~="bg-(--kvp-selection-active)"],
+html[data-theme="light"] .node-col button[class~="bg-(--node-selection-active)"],
+html[data-theme="light"] .node-col button[class~="bg-(--sticky-selection-active)"],
+html[data-theme="light"] .node-col button[class~="bg-white"] { background: #75b5b4; color: #092f37; }
+html[data-theme="light"] .cookie-container {
+  border-color: #8fc4c2; background: #e6f5f3; box-shadow: 0 24px 70px rgba(35,73,97,.22);
+}
+html[data-theme="light"] .cookie-copy { color: #21495a; }
+html[data-theme="light"] .cookie-container .link { color: #076b65; }
+html[data-theme="light"] .cookie-buttons .button-base:first-child { background: #c4e9e3; border-color: #65b4aa; }
+html[data-theme="light"] .cookie-buttons .button-base:first-child:hover { background: #a9ded6; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
