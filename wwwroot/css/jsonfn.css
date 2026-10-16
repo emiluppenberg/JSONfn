@@ -273,12 +273,11 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
   background: rgba(255,255,255,.14); border-left: 1px solid rgba(255,255,255,.15); }
 .count { color: #fff; font: 600 10px ui-monospace, Consolas, monospace; }
 .node-col .relative { position: relative; }
-.button-options { position: absolute; left: -24px; top: 0; display: flex; align-items: center; justify-content: center;
+.button-options { position: absolute; left: -24px; top: calc(var(--inp-h) * -.5); display: flex; align-items: center; justify-content: center;
   width: 24px; height: 24px; padding: 0; border: 1px solid var(--border-strong); border-radius: 5px;
   background: var(--surface-raised); color: var(--text); }
 .button-options:hover { background: var(--surface-hover); border-color: var(--accent); }
 .button-options svg { width: 16px; height: 16px; }
-.button-options.-translate-y-\[calc\(var\(--inp-h\)\/2\)\] { top: -12px; }
 
 /* Nested selection flyouts retain their original 80px footprint. */
 .node-col .transition-opt { color: var(--text); }
@@ -291,7 +290,10 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
 .node-col .transition-opt.relative, .node-col .relative.w-20 { position: relative; width: 80px; height: var(--inp-h); }
 .node-col .transition-opt.absolute.w-20, .node-col .flex.flex-col.absolute.w-20 { left: 0; }
 .node-col .transition-opt.absolute[style], .node-col .flex.flex-col.absolute[style] { left: 80px !important; }
-.node-col .-translate-y-\[calc\(var\(--inp-h\)\/2\)\] { margin-top: -12px; }
+.node-col :is(.div-node, .div-node-selected, .div-kvp, .div-kvp-selected) > .relative > .transition-opt.absolute {
+  top: calc(var(--inp-h) * -.5);
+}
+.node-col .-translate-y-\[calc\(var\(--inp-h\)\/2\)\]:not(.button-options) { margin-top: calc(var(--inp-h) * -.5); }
 .node-col .transition-opt button, .node-col .flex.flex-col.absolute button {
   display: flex; align-items: center; justify-content: center; width: 100%; min-height: var(--inp-h);
   padding: 1px 3px; border: 1px solid transparent; border-radius: 4px; background: transparent;
