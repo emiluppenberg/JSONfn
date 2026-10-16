@@ -4,7 +4,7 @@
 <div class="transition-opt option-marker @Transition @BackgroundColor @StickyClass">
 </div>
 <div tabindex="0" @ref="Ref"
-     class="transition-opt option-panel @Transition @ParentHover @HoverColor @OutlineColor @BackgroundColor @StickyClass">
+     class="transition-opt option-panel @Transition @ParentHover @HoverColor @OutlineColor @BackgroundColor @StickyClass @(NodeTypeToggled ? "option-type-open" : "")">
 
   @if (Kvp is not null)
   {
@@ -100,13 +100,13 @@
                      OnToggled="HandleNodeTypeToggled" />
       @if (Node.TypeOption!.Name == "class")
       {
-        <button class="option-setting"
+        <button class="option-setting option-class-constructor"
                 @onclick="async () => await ForwardSetNodeClassPrimaryConstructor.InvokeAsync()">
           <label class="option-setting-label option-setting-label-compact">Primary constructor</label>
           <input class="option-setting-checkbox" type="checkbox" disabled
                  @bind="Node.TypeOption!.UsePrimaryConstructor" />
         </button>
-        <button class="option-setting"
+        <button class="option-setting option-class-constructor"
                 @onclick="async () => await ForwardSetNodeClassRegularConstructor.InvokeAsync()">
           <label class="option-setting-label option-setting-label-compact">Regular constructor</label>
           <input class="option-setting-checkbox" type="checkbox" disabled
@@ -174,13 +174,13 @@
                      OnToggled="HandleNodeTypeToggled" />
       @if (Node.TypeOption!.Name == "class")
       {
-        <button class="option-setting"
+        <button class="option-setting option-class-constructor"
                 @onclick="async () => await ForwardSetNodeClassPrimaryConstructor.InvokeAsync()">
           <label class="option-setting-label option-setting-label-compact">Primary constructor</label>
           <input class="option-setting-checkbox" type="checkbox" disabled
                  @bind="Node.TypeOption!.UsePrimaryConstructor" />
         </button>
-        <button class="option-setting"
+        <button class="option-setting option-class-constructor"
                 @onclick="async () => await ForwardSetNodeClassRegularConstructor.InvokeAsync()">
           <label class="option-setting-label option-setting-label-compact">Regular constructor</label>
           <input class="option-setting-checkbox" type="checkbox" disabled

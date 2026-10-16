@@ -93,6 +93,10 @@ a:hover { color: #8cece3; }
 .nav-container .link:hover { background: var(--surface-raised); color: var(--text); }
 .nav-container .link.active { background: var(--accent-soft); color: var(--accent); }
 .nav-container:has(.link.active:not(:first-child)) .link:first-child.active { background: transparent; color: var(--muted); }
+.nav-container .link.active:hover,
+.nav-container:has(.link.active:not(:first-child)) .link:first-child.active:hover {
+  background: var(--surface-raised); color: var(--text);
+}
 .theme-toggle {
   display: grid; place-items: center; flex: none; width: 34px; height: 34px; margin-left: auto;
   border: 1px solid var(--border-strong); border-radius: 9px; background: var(--surface-raised);
@@ -108,7 +112,7 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
     linear-gradient(160deg, var(--canvas-highlight), var(--canvas) 58%);
 }
 .tool-wasm-loader { position: absolute; inset: 0; z-index: -1; display: grid; place-items: center; background: var(--canvas); }
-.tool-wasm-loader-content { display: flex; flex-direction: column; align-items: center; gap: 12px; color: var(--accent); font-size: 22px; letter-spacing: .02em; }
+.tool-wasm-loader-content { display: flex; flex-direction: column; align-items: center; gap: 12px; font-size: 22px; letter-spacing: .02em; }
 .loader-logo { width: clamp(160px, 25vw, 320px); }
 
 /* Shared controls */
@@ -150,30 +154,28 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
 .is-shown-scale { transform: scale(1); opacity: 1; }
 .is-inert { pointer-events: none; }
 
-/* Home keeps its centered hero, feature line, changelog, and bottom action. */
+/* Keep the home content centered below the nav. */
 .home-content { width: 100%; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center;
-  gap: clamp(20px, 4vh, 40px); overflow-y: auto; scroll-behavior: smooth; padding: clamp(20px, 5vh, 52px) 18px 24px; }
-.home-hero { width: min(100%, 900px); }
-.home-hero svg { display: block; width: min(480px, 90%); max-height: 145px; margin: 0 auto; filter: drop-shadow(0 15px 30px rgba(0, 0, 0, .25)); }
+  overflow-y: auto; padding: clamp(10px, 2dvh, 24px) 16px; }
+.home-hero { display: flex; flex-direction: column; gap: clamp(8px, 1.8dvh, 18px);
+  width: min(100%, 900px); margin: auto 0; }
+.home-hero svg { display: block; align-self: center; width: min(440px, 80vw, 48dvh); height: auto;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, .25)); }
 .home-hero svg rect { fill: #172b3d; stroke: #37576b; stroke-width: 1px; }
-.home-title { margin: 18px 0 28px; color: var(--text); font-size: clamp(25px, 4vw, 40px);
-  font-weight: 700; letter-spacing: -.045em; text-align: center; }
-.home-details { display: flex; flex-direction: column; gap: 24px; color: var(--muted); }
-.home-steps { display: flex; align-items: stretch; justify-content: space-evenly; gap: 12px; }
-.home-steps p { flex: 1; margin: 0; padding: 12px 16px; border: 1px solid var(--border);
-  border-radius: 12px; background: rgba(25, 40, 58, .7); color: #bddddf; font-size: 13px; font-weight: 600; text-align: center; }
-.home-summary { display: flex; align-items: center; justify-content: space-around; gap: 22px; }
-.home-description { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
+.home-title { margin: 0; color: var(--text); font-size: clamp(23px, 4vw, 38px);
+  font-weight: 700; line-height: 1.15; letter-spacing: -.045em; text-align: center; }
+.home-details { display: flex; flex-direction: column; gap: clamp(8px, 2dvh, 20px); color: var(--muted); }
+.home-steps { display: flex; align-items: stretch; justify-content: space-evenly; gap: clamp(6px, 1.3vw, 12px); }
+.home-steps p { flex: 1; margin: 0; padding: clamp(6px, 1.2dvh, 12px) 10px; border: 1px solid var(--border);
+  border-radius: 12px; background: rgba(25, 40, 58, .7); color: #bddddf; font-size: 13px;
+  font-weight: 600; line-height: 1.25; text-align: center; }
+.home-summary { display: flex; align-items: center; justify-content: space-between; gap: clamp(12px, 2vw, 22px); }
+.home-description { flex: 1; min-width: 0; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
 .home-description strong { color: var(--text); }
-.home-changelog { width: min(400px, 50%); height: 105px; overflow-y: auto; padding: 12px 15px;
-  border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: 0 14px 34px rgba(0,0,0,.16); }
-.home-changelog-list { display: flex; flex-direction: column; gap: 8px; }
-.home-changelog-entry { display: flex; gap: 12px; color: var(--muted); font-size: 11px; line-height: 1.4; }
-.home-changelog-entry p { margin: 0; overflow-wrap: anywhere; }
-.home-changelog-entry p:first-child { flex: none; color: var(--accent); font-family: ui-monospace, Consolas, monospace; }
 .home-ads { display: flex; justify-content: center; width: 100%; }
-.home-go { display: grid; place-items: center; flex: none; width: min(100% - 32px, 900px); height: 52px;
-  margin: 0 auto 16px; border-color: #317f81; background: linear-gradient(100deg, #16777b, #245888);
+.home-go { display: grid; place-items: center; flex: none; width: clamp(88px, 18vw, 144px);
+  height: clamp(40px, 6.5dvh, 52px); margin: 0;
+  border-color: #317f81; background: linear-gradient(100deg, #16777b, #245888);
   color: #f5ffff; font-size: 20px; font-weight: 750; letter-spacing: .02em; text-decoration: none;
   box-shadow: 0 12px 26px rgba(0, 0, 0, .22); }
 .home-go:hover { background: linear-gradient(100deg, #218e90, #326ba0); color: #fff; }
@@ -328,6 +330,7 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
 .node-col .option-submenu.is-open:hover::before { border-color: var(--accent); }
 .node-col .option-submenu.is-open > .option-submenu-trigger { grid-column: 1; grid-row: 1; pointer-events: auto; }
 .node-col .option-submenu.is-open > .option-submenu-choice { position: relative; z-index: 1; grid-column: 2; pointer-events: auto; }
+.node-col .option-panel.option-type-open > .option-class-constructor { display: none; }
 .node-col :is(.annotation-key-panel, .annotation-value-panel) { left: calc(100% + var(--option-gap)); width: var(--option-flyout-width); }
 .node-col .annotation-key-panel { z-index: 32; }
 .node-col .annotation-value-panel { z-index: 33; width: var(--option-value-width); }
@@ -403,12 +406,13 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
 @media (max-width: 1279px) {
   .app-container { gap: 12px; }
   .json-container, .code-container { height: 50%; min-height: 240px; }
-  .home-steps { flex-direction: column; }
-  .home-summary { flex-direction: column; align-items: stretch; }
-  .home-changelog { width: 100%; }
-  .home-description { text-align: center; }
   .cookie-container { flex-direction: column; align-items: stretch; }
   .cookie-buttons { justify-content: flex-end; }
+}
+@media (max-width: 680px) {
+  .home-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .home-steps p { padding: 7px 4px; font-size: clamp(10px, 2.6vw, 13px); overflow-wrap: anywhere; }
+  .home-description { font-size: 12px; line-height: 1.35; }
 }
 @media (max-width: 480px) {
   .nav-container { gap: 0; padding: 0 6px; }
@@ -416,8 +420,15 @@ html[data-theme="light"] .theme-toggle::before { content: "☾"; font-size: 22px
   .json-menu, .code-menu { gap: 5px; }
   .toolbar-button { min-width: 69px; padding-inline: 6px; font-size: 11px; }
   .root-name-input { width: 36%; }
-  .home-go { width: calc(100% - 20px); }
-  .home-changelog { height: 126px; }
+}
+@media (max-height: 550px) {
+  .home-content { padding-block: 6px; }
+  .home-hero { gap: 6px; }
+  .home-title { font-size: clamp(20px, 3vw, 30px); }
+  .home-details { gap: 6px; }
+  .home-steps p { padding-block: 4px; }
+  .home-description { font-size: 11px; line-height: 1.25; }
+  .home-go { height: 38px; font-size: 16px; }
 }
 
 /* The light palette reuses the same layout and components as the default dark theme. */
@@ -444,7 +455,6 @@ html[data-theme="light"] .load-textarea { background: #ffffff; }
 html[data-theme="light"] .home-hero svg { filter: drop-shadow(0 15px 30px rgba(35, 73, 97, .12)); }
 html[data-theme="light"] .home-hero svg rect { fill: #e4f0f4; stroke: #a5c6d2; }
 html[data-theme="light"] .home-steps p { background: #ffffff; color: #315b64; }
-html[data-theme="light"] .home-changelog { box-shadow: 0 14px 34px rgba(35, 73, 97, .10); }
 html[data-theme="light"] .home-go {
   border-color: #176e82; background: linear-gradient(100deg, #087f78, #21699c);
   box-shadow: 0 12px 26px rgba(24, 71, 96, .18);
