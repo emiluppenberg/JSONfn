@@ -7,21 +7,21 @@
   <div class="sentinel" @ref="_sentinel"></div>
   <div class="@GetDivStickyClass()" @onmouseover="() => { IsMouseOver = true; }"
        @onmouseleave="() => { IsMouseOver = false; }">
-    <button class="@GetButtonStickyClass() @(NodeToggledOptions == CurrentNode ? "border-r-0" : "")"
+    <button class="@GetButtonStickyClass() @(NodeToggledOptions == CurrentNode ? "option-trigger-open" : "")"
             @onclick="() => ToggleNode(CurrentNode, 0)">
-      <span class="key font-bold">@CurrentNode.Name</span>
+      <span class="key key-node">@CurrentNode.Name</span>
       <div class="div-value">
-        <div class="value text-base">@(CurrentNode.Type == JNodeType.Object ? "{}" : "[]")</div>
-        <div class="div-count transition-val @(AnyNestedSelected ? "scale-x-100" : "scale-x-0")">
+        <div class="value">@(CurrentNode.Type == JNodeType.Object ? "{}" : "[]")</div>
+        <div class="div-count transition-val @(AnyNestedSelected ? "is-expanded-x" : "is-collapsed-x")">
           <div class="count">@CurrentNode.TotalNestedSelected</div>
         </div>
       </div>
     </button>
-    <div class="relative">
+    <div class="node-option-anchor">
       <button id="toggle-options"
-              class="-translate-y-[calc(var(--inp-h)/2)] button-options bg-(--sticky-btn-opt) transition-val @(IsMouseOver && AnyNestedSelected ? "scale-x-100" : "scale-x-0 pointer-events-none")"
+              class="button-options option-toggle-sticky transition-val @(IsMouseOver && AnyNestedSelected ? "is-expanded-x" : "is-collapsed-x is-inert")"
               @onclick="() => { NodeToggledOptions = CurrentNode; }">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none"
+        <svg xmlns="http://www.w3.org/2000/svg" class="option-toggle-icon" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <line x1="4" y1="7" x2="20" y2="7" />
           <line x1="4" y1="12" x2="20" y2="12" />
@@ -31,7 +31,7 @@
       @if (NodeToggledOptions == CurrentNode)
       {
         <NodeKvpOptions LangOptions="LangOptions" Node="CurrentNode" Target="sticky"
-                        ParentHover="@(IsMouseOver ? "outline-2" : "")"
+                        ParentHover="@(IsMouseOver ? "option-parent-hover" : "")"
                         ForwardSetNodeNullable="async () => await SetNodeNullable(CurrentNode)"
                         ForwardSetNodeOptional="async () => await SetNodeOptional(CurrentNode)"
                         ForwardSetNodeAllowUndefined="async () => await SetNodeAllowUndefined(CurrentNode)"
@@ -57,23 +57,23 @@
     @foreach (var child in CurrentNode.Children)
     {
       <div
-        class="transition-node @(child.TotalNestedSelected > 0 ? "div-node-selected" : "div-node") @(child.IsExpanded ? "scale-x-0" : "")"
+        class="transition-node @(child.TotalNestedSelected > 0 ? "div-node-selected" : "div-node") @(child.IsExpanded ? "is-collapsed-x" : "")"
         @onmouseover="() => { IsMouseOverNode = child; }" @onmouseleave="() => { IsMouseOverNode = null; }">
         <button @key="child" class="transition-gen button-node"
                 @onclick="() => ToggleNode(child, CurrentNode.Children.IndexOf(child))">
-          <span class="key font-bold">@child.Name</span>
+          <span class="key key-node">@child.Name</span>
           <div class="div-value">
-            <div class="value text-base">@(child.Type == JNodeType.Object ? "{}" : "[]")</div>
-            <div class="div-count transition-val @(child.TotalNestedSelected > 0 ? "scale-x-100" : "scale-x-0")">
+            <div class="value">@(child.Type == JNodeType.Object ? "{}" : "[]")</div>
+            <div class="div-count transition-val @(child.TotalNestedSelected > 0 ? "is-expanded-x" : "is-collapsed-x")">
               <div class="count">@child.TotalNestedSelected</div>
             </div>
           </div>
         </button>
-        <div class="relative">
+        <div class="node-option-anchor">
           <button id="toggle-options"
-                  class="button-options bg-(--node-btn-opt) transition-val @(IsMouseOverNode == child && child.TotalNestedSelected > 0 ? "scale-x-100" : "scale-x-0 pointer-events-none")"
+                  class="button-options option-toggle-node transition-val @(IsMouseOverNode == child && child.TotalNestedSelected > 0 ? "is-expanded-x" : "is-collapsed-x is-inert")"
                   @onclick="() => { NodeToggledOptions = child; }">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none"
+            <svg xmlns="http://www.w3.org/2000/svg" class="option-toggle-icon" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round">
               <line x1="4" y1="7" x2="20" y2="7" />
               <line x1="4" y1="12" x2="20" y2="12" />
@@ -83,7 +83,7 @@
           @if (NodeToggledOptions == child)
           {
             <NodeKvpOptions LangOptions="LangOptions" Node="child" Target="node"
-                            ParentHover="@(IsMouseOverNode == child ? "outline-3" : "")"
+                            ParentHover="@(IsMouseOverNode == child ? "option-parent-hover" : "")"
                             ForwardSetNodeNullable="async () => await SetNodeNullable(child)"
                             ForwardSetNodeOptional="async () => await SetNodeOptional(child)"
                             ForwardSetNodeAllowUndefined="async () => await SetNodeAllowUndefined(child)"
@@ -111,17 +111,17 @@
            @onmouseover="() => { IsMouseOverKvp = kvp; }" @onmouseleave="() => { IsMouseOverKvp = null; }">
         <button @key="kvp" class="transition-gen @(kvp.IsSelected ? "button-kvp-selected" : "button-kvp")"
                 @onclick='async () => await SetKvpSelected(kvp)'>
-          <span class="key font-light">@kvp.Kvp.Key</span>
+          <span class="key">@kvp.Kvp.Key</span>
           <div class="div-value">
-            <div class="value italic truncate">
+            <div class="value">
               @(kvp.Kvp.Value + (kvp.DataNullable && LangOptions.Language == "C#" ? "?" : ""))</div>
             </div>
           </button>
-          <div class="relative">
+          <div class="node-option-anchor">
             <button id="toggle-options"
-                    class="button-options transition-val bg-(--kvp-btn-opt) @(IsMouseOverKvp == kvp && kvp.IsSelected ? "scale-x-100" : "scale-x-0 pointer-events-none")"
+                    class="button-options transition-val option-toggle-kvp @(IsMouseOverKvp == kvp && kvp.IsSelected ? "is-expanded-x" : "is-collapsed-x is-inert")"
                     @onclick="() => { KvpToggledOptions = kvp; }">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none"
+              <svg xmlns="http://www.w3.org/2000/svg" class="option-toggle-icon" viewBox="0 0 24 24" fill="none"
                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
                 <line x1="4" y1="7" x2="20" y2="7" />
                 <line x1="4" y1="12" x2="20" y2="12" />
@@ -131,7 +131,7 @@
             @if (KvpToggledOptions == kvp)
             {
               <NodeKvpOptions LangOptions="LangOptions" Kvp="kvp" Target="kvp"
-                              ParentHover="@(IsMouseOverKvp == kvp ? "outline-3" : "")"
+                              ParentHover="@(IsMouseOverKvp == kvp ? "option-parent-hover" : "")"
                               ForwardSetKvpNullable="async () => await SetKvpNullable(kvp)"
                               ForwardSetKvpOptional="async() => await SetKvpOptional(kvp)"
                               ForwardSetKvpAllowUndefined="async () => await SetKvpAllowUndefined(kvp)"

@@ -3,8 +3,8 @@
 
 @if (!HasInteracted)
 {
-  <div class="transition-cookie @(Initialized ? "scale-100" : "scale-0") cookie-container">
-    <p class="w-50 md:min-w-100">
+  <div class="transition-cookie @(Initialized ? "is-shown-scale" : "is-hidden-scale") cookie-container">
+    <p class="cookie-copy">
       This website uses cookies to display advertisements.
       By accepting, you consent to the use of cookies.<br />
       <NavLink class="link" href="/privacy">Learn more</NavLink>

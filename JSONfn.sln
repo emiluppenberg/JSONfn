@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonUI-blazor", "JsonUI-blazor.csproj", "{52590715-9411-E60E-024B-98BCA9896A39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSONfn", "JSONfn.csproj", "{52590715-9411-E60E-024B-98BCA9896A39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonUI-blazor.Client", "JsonUI-blazor.Client\JsonUI-blazor.Client.csproj", "{C3769B7E-17A2-4C31-8D5F-FAA0F11B77B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSONfn.Client", "JSONfn.Client\JSONfn.Client.csproj", "{C3769B7E-17A2-4C31-8D5F-FAA0F11B77B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

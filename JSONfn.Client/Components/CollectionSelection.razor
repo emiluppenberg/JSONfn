@@ -1,29 +1,29 @@
-<div class="relative w-20 h-(--inp-h)">
+<div class="option-submenu-anchor">
   <div
-    class="flex flex-col absolute top-0 left-0 w-20 h-fit text-xs font-medium @(IsToggled ? $"hover:outline-3 {OutlineColor}" : "") @StickyClass"
+    class="option-submenu @(IsToggled ? $"is-open option-outline-hover {OutlineColor}" : "") @StickyClass"
     @onclick="async () => await OnToggled.InvokeAsync()">
-    <button class="w-full h-(--inp-h) hover:border truncate">@CurrentSelected</button>
+    <button class="option-submenu-trigger">@CurrentSelected</button>
     @if (IsToggled)
     {
       @foreach (var option in Collection)
       {
         <button
-          class="z-50 w-full h-(--inp-h) hover:border truncate @BackgroundColor @(option.ToString() == CurrentSelected ? $"{SelectedColor} text-white" : "")"
+          class="option-submenu-choice @BackgroundColor @(option.ToString() == CurrentSelected ? $"{SelectedColor} option-choice-selected-text" : "")"
           @onclick="async () => await OnSelected.InvokeAsync(option.ToString())" @onclick:stopPropagation="true">
           @option.ToString()
         </button>
       }
-      <button class="z-50 w-full h-(--inp-h) hover:border truncate flex items-center @BackgroundColor"
+      <button class="option-submenu-choice option-submenu-check @BackgroundColor"
         @onclick="async () => await OnSetCollectionItemNullable.InvokeAsync()" @onclick:stopPropagation="true">
-        <label class="text-[0.5rem] font-medium text-center w-15">Allow null items</label>
-        <input type="checkbox" class="w-5 h-(--inp-h) pointer-events-none" @bind="CollectionItemNullable" />
+        <label class="option-setting-label option-setting-label-compact">Allow null items</label>
+        <input type="checkbox" class="option-setting-checkbox" @bind="CollectionItemNullable" />
       </button>
       @if (LangOptions.Language == "TypeScript")
       {
-        <button class="z-50 w-full h-(--inp-h) hover:border truncate flex items-center @BackgroundColor"
+        <button class="option-submenu-choice option-submenu-check @BackgroundColor"
           @onclick="async () => await OnSetCollectionItemAllowUndefined.InvokeAsync()" @onclick:stopPropagation="true">
-          <label class="text-[0.5rem] font-medium text-center w-15">Allow undefined items</label>
-          <input type="checkbox" class="w-5 h-(--inp-h) pointer-events-none" @bind="CollectionItemAllowUndefined" />
+          <label class="option-setting-label option-setting-label-compact">Allow undefined items</label>
+          <input type="checkbox" class="option-setting-checkbox" @bind="CollectionItemAllowUndefined" />
         </button>
       }
     }
@@ -65,21 +65,21 @@
 
     if (Target == "kvp")
     {
-      BackgroundColor = "bg-(--kvp-selection)";
-      SelectedColor = "bg-(--kvp-selection-active)";
-      OutlineColor = "outline-(--kvp-sel-hov-ol)";
+      BackgroundColor = "option-tone-kvp-selected";
+      SelectedColor = "option-tone-kvp-active";
+      OutlineColor = "option-outline-kvp";
     }
     if (Target == "node")
     {
-      BackgroundColor = "bg-(--node-selection)";
-      SelectedColor = "bg-(--node-selection-active)";
-      OutlineColor = "outline-(--node-hov-ol)";
+      BackgroundColor = "option-tone-node-selected";
+      SelectedColor = "option-tone-node-active";
+      OutlineColor = "option-outline-node";
     }
     if (Target == "sticky")
     {
-      BackgroundColor = "bg-(--sticky-selection)";
-      SelectedColor = "bg-(--sticky-selection-active)";
-      OutlineColor = "outline-(--sticky-hov-ol)";
+      BackgroundColor = "option-tone-sticky-selected";
+      SelectedColor = "option-tone-sticky-active";
+      OutlineColor = "option-outline-sticky";
     }
   }
 }

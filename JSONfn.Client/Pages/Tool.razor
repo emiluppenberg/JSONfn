@@ -1,0 +1,309 @@
+@page "/tool"
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@using System.Net.Http.Headers
+@using System.Buffers.Text
+@using System.Text
+@inject HttpClient httpClient
+@inject IJSRuntime JS
+
+<PageTitle>JSONfn - Tool</PageTitle>
+
+<div class="page">
+
+  <div class="app-container" id="app-container">
+
+    @* <Cookie OnConsentValue="async () => await RenderAdsAsync()" /> *@
+
+    <div class="json-container" id="json-container">
+      <div class="json-menu">
+        <button class="toolbar-button @(LoadingText ? "button-base-active" : "button-base")"
+                @onclick="async () => await ToggleLoadText()">Load JSON</button>
+        @if (LoadingText)
+        {
+          <label>
+            Root name:
+          </label>
+          <input type="text" class="load-input root-name-input" @bind="RootName" placeholder="Root name" />
+        }
+      </div>
+
+      <div class="transition-input load-menu @(LoadingText ? "is-expanded-y editor-input-open" : "is-collapsed-y input-collapsed-height")">
+        <textarea class="load-textarea" @bind="Json" placeholder="Paste JSON"></textarea>
+        <div class="load-actions">
+          <button class="button-base" @onclick="() => LoadJson()">OK</button>
+          <button class="button-base" @onclick="() => { LoadingText = false; }">Cancel</button>
+        </div>
+      </div>
+
+      <div class="transition-gen node-container" id="node-container">
+        @if (Root is not null)
+        {
+          <JNodeView CurrentNode="Root" RootName="@Root.Name" ContainerHeight="NodeContainerHeight"
+                     OnNodeToggled="HandleNodeToggled" OnKvpSelected="HandleKvpSelected" OnRenderCode="HandleRenderCode"
+                     LangOptions="langOptions" />
+        }
+        else
+        {
+          <div class="empty-state">
+            <span>No JSON loaded</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="code-container">
+      <div class="code-menu">
+        <select class="select-base" @bind="SelectedLanguage" @bind:after="HandleSelectedLanguage">
+          <option selected value="C#">C#</option>
+          <option value="TypeScript">TypeScript</option>
+        </select>
+
+        <button class="transition-base @(IsOptions ? "button-base-active" : "button-base")"
+                @onclick="() => { IsOptions = !IsOptions; }">Options</button>
+      </div>
+
+
+      <div class="code-workspace">
+        @if (RenderCode.Length < 1)
+        {
+          <div class="transition-gen code">
+            <div class="empty-state">
+              <span>No properties selected</span>
+            </div>
+          </div>
+        }
+        else
+        {
+          <pre class="transition-gen code">
+                @RenderCode
+                <CopyButton Code="@RenderCode"/>
+              </pre>
+        }
+
+        <div class="transition-gen code-options @(IsOptions ? "options-open" : "options-closed")">
+          @if (langOptions.Language == "C#")
+          {
+            <CSharpMenu LangOptions="langOptions" OnSetCollection="HandleSetCollection" OnSetNullable="HandleSetNullable"
+                        OnSetJsonLibrary="HandleSetJsonLibrary" OnSetNamingConvention="HandleSetNamingConvention" />
+          }
+          @if (langOptions.Language == "TypeScript")
+          {
+            <TypescriptMenu LangOptions="langOptions" OnSetCollection="HandleSetCollection"
+                            OnSetNullable="HandleSetNullable" OnSetTypeOption="HandleSetTypeOption"
+                            OnSetClassPrimaryConstructor="HandleSetTypeScriptClassPrimaryConstructor"
+                            OnSetClassRegularConstructor="HandleSetTypeScriptClassRegularConstructor"
+                            OnSetClassNoConstructor="HandleSetTypeScriptClassNoConstructor" />
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  @* <div class="bottom-container">
+        <div class="bottom-surface">
+          <div class="bottom-ads">
+            <div id="tool-ad-desktop-1"></div>
+            <div id="tool-ad-desktop-2"></div>
+            <div id="tool-ad-mobile-1"></div>
+          </div>
+        </div>
+      </div> *@
+
+</div>
+
+@code {
+  public string Url { get; set; } = "";
+  public bool IsOptions { get; set; }
+  public string RenderCode { get; set; } = "";
+  public string Json { get; set; } = "";
+  public bool LoadingText { get; set; } = true;
+  public int NodeContainerHeight;
+  public List<JNode> JNodes { get; set; } = new();
+  public JNode? Root { get; set; }
+  public string? RootName { get; set; }
+  private string SelectedLanguage { get; set; } = "C#";
+  private ILanguageOptions langOptions = new CSharpOptions();
+  private bool ShowCopyNotification { get; set; }
+
+  protected override async Task OnInitializedAsync()
+  {
+    Json = await httpClient.GetStringAsync("example.json");
+  }
+
+  @* protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (!firstRender) return;
+    await RenderAdsAsync();
+  } *@
+
+  @* private async Task RenderAdsAsync()
+  {
+    await JS.InvokeVoidAsync("window.initializeAds", "tool");
+  } *@
+
+  private void HandleSelectedLanguage()
+  {
+    switch (SelectedLanguage)
+    {
+      case "C#":
+        langOptions = new CSharpOptions();
+        JNodes.ForEach(x => x.TypeOption = null);
+        break;
+      case "TypeScript":
+        langOptions = new TypeScriptOptions();
+        JNodes.ForEach(x => x.TypeOption = langOptions.TypeOption);
+        break;
+    }
+
+    LoadJson();
+    HandleSetCollection(langOptions.GetCollectionOptions().GetValue(0)!.ToString()!);
+    HandleRenderCode();
+  }
+
+  private void HandleSetJsonLibrary(IJsonLibrary? jsonLibrary)
+  {
+    foreach (var jn in JNodes)
+    {
+      jn.JsonLibraryAnnotations!.Clear();
+      jn.KeyValues.ForEach(x => x.JsonLibraryAnnotations!.Clear());
+    }
+
+    langOptions.JsonLibrary = jsonLibrary;
+    HandleRenderCode();
+  }
+
+  private void HandleSetTypeOption(string setTypeOption)
+  {
+    var typeOption = Language.GetTypeOptions()
+    .FirstOrDefault(x => x.Name == setTypeOption);
+
+    langOptions.TypeOption = typeOption;
+    JNodes.ForEach(x => x.TypeOption = typeOption);
+    HandleRenderCode();
+  }
+
+  private void HandleSetTypeScriptClassPrimaryConstructor()
+  {
+    langOptions.TypeOption!.UsePrimaryConstructor = true;
+    langOptions.TypeOption!.UseRegularConstructor = false;
+    JNodes.ForEach(x => x.TypeOption = langOptions.TypeOption);
+    HandleRenderCode();
+  }
+
+  private void HandleSetTypeScriptClassRegularConstructor()
+  {
+    langOptions.TypeOption!.UseRegularConstructor = true;
+    langOptions.TypeOption!.UsePrimaryConstructor = false;
+    JNodes.ForEach(x => x.TypeOption = langOptions.TypeOption!);
+    HandleRenderCode();
+  }
+
+  private void HandleSetTypeScriptClassNoConstructor()
+  {
+    langOptions.TypeOption!.UsePrimaryConstructor = false;
+    langOptions.TypeOption!.UseRegularConstructor = false;
+    JNodes.ForEach(x => x.TypeOption = langOptions.TypeOption!);
+    HandleRenderCode();
+  }
+
+  private void HandleSetNamingConvention(INamingConvention namingConvention)
+  {
+    langOptions.NamingConvention = namingConvention;
+    var isNamingConvention = namingConvention.Name != "No naming convention";
+    JNodes.ForEach(x => x.PropagateNameAnnotation(isNamingConvention, langOptions.JsonLibrary!.NameAnnotation));
+    HandleRenderCode();
+  }
+
+  private void HandleSetCollection(string collection)
+  {
+    JNodes.ForEach(x => x.SetNodeCollectionAs(collection));
+    JNodes.ForEach(x => x.SetKvpsCollectionAs(collection));
+    HandleRenderCode();
+  }
+
+  private void HandleSetNullable(bool nullable)
+  {
+    JNodes.ForEach(x => x.SetNullable(nullable));
+    HandleRenderCode();
+  }
+
+  void LoadJson()
+  {
+    RenderCode = "";
+    RootName = RootName is null ? "Root" : RootName;
+    var rootType = Json.StartsWith('{') ? "{}" : "[]";
+    JNodes = JNodeMaster.CreateFromJson(Json, langOptions, RootName)!;
+    Root = JNodes.FirstOrDefault(x => x.LineageKey == $"{RootName}{rootType}");
+
+    if (Root is null)
+    {
+      Root = new JNode($"{RootName}{rootType}", string.Empty, RootName, new(), langOptions);
+
+      foreach (var jn in JNodes)
+      {
+        if (jn.ParentKey == $"{RootName}{rootType}")
+        {
+          Root.Children.Add(jn);
+          jn.Parent = Root;
+        }
+      }
+    }
+
+    Root.IsExpanded = true;
+
+    NodeContainerHeight = (Root.KeyValues.Count + Root.Children.Count) * General.RowHeightPx;
+    LoadingText = false;
+  }
+
+  async Task ToggleLoadText()
+  {
+    LoadingText = !LoadingText;
+    await InvokeAsync(StateHasChanged);
+  }
+
+  async Task HandleNodeToggled(JNode newNode)
+  {
+    var toggleTo = !newNode.IsExpanded;
+    JNodes.ForEach(n => n.IsExpanded = false);
+
+    newNode.IsExpanded = toggleTo;
+    NodeContainerHeight = (newNode.KeyValues.Count + newNode.Children.Count) * General.RowHeightPx;
+
+    if (newNode.Parent is not null)
+    {
+      var iteratingNode = newNode;
+
+      do
+      {
+        iteratingNode = iteratingNode.Parent;
+        iteratingNode.IsExpanded = true;
+        NodeContainerHeight += (iteratingNode.KeyValues.Count + iteratingNode.Children.Count) * General.RowHeightPx;
+      }
+      while (iteratingNode.Parent is not null);
+    }
+
+    await InvokeAsync(StateHasChanged);
+  }
+
+  async Task HandleKvpSelected(KvpSelectedArgs args)
+  {
+    args.node.TotalNestedSelected += args.selected ? 1 : -1;
+
+    var iteratingNode = args.node;
+
+    while (iteratingNode.Parent is not null)
+    {
+      iteratingNode = iteratingNode.Parent;
+      iteratingNode.TotalNestedSelected += args.selected ? 1 : -1;
+    }
+
+    await InvokeAsync(StateHasChanged);
+  }
+
+  void HandleRenderCode()
+  {
+    RenderCode = JNodeMaster.JNodesToCode(JNodes, langOptions);
+    StateHasChanged();
+  }
+}
